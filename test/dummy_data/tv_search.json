@@ -1,0 +1,26 @@
+{
+    "page": 1,
+    "results": [
+        {
+            "backdrop_path": "/thCj6VEVQlFlup4aJ74kdRhfujB.jpg",
+            "first_air_date": "2018-10-10",
+            "genre_ids": [
+                18
+            ],
+            "id": 82428,
+            "name": "All American",
+            "origin_country": [
+                "US"
+            ],
+            "original_language": "en",
+            "original_name": "All American",
+            "overview": "When a rising high school football player from South Central L.A. is recruited to play for Beverly Hills High, the wins, losses and struggles of two families from vastly different worlds - Compton and Beverly Hills - begin to collide. Inspired by the life of pro football player Spencer Paysinger.",
+            "popularity": 99.077,
+            "poster_path": "/bpmZDwQfUPVKCLfIivbWnJQT6wU.jpg",
+            "vote_average": 8.3,
+            "vote_count": 342
+        }
+    ],
+    "total_pages": 60,
+    "total_results": 1200
+}

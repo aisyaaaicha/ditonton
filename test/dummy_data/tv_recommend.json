@@ -1,0 +1,28 @@
+{
+    "page": 1,
+    "results": [
+        {
+            "adult": false,
+            "backdrop_path": null,
+            "id": 10,
+            "name": "All in Good Faith",
+            "original_language": "en",
+            "original_name": "All in Good Faith",
+            "overview": "British sitcom in which Reverend Philip Lambe, after becoming bored in his wealthy Oxfordshire parish, asks for a transfer to a more difficult assignment. Sent to Edendale, a fictional urban town in the Midlands, he is accompanied by his wife Emma, sixteen-year-old daughter Miranda and twelve-year-old son Peter.",
+            "poster_path": "/h9qveCyL3m6tNOrdhUabZk7khKt.jpg",
+            "media_type": "tv",
+            "genre_ids": [
+                35
+            ],
+            "popularity": 6.419,
+            "first_air_date": "1985-12-30",
+            "vote_average": 1.637,
+            "vote_count": 62,
+            "origin_country": [
+                "GB"
+            ]
+        }
+    ],
+    "total_pages": 1,
+    "total_results": 8
+}
