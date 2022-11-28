@@ -31,18 +31,6 @@ import 'package:ditonton/presentation/bloc/movie/movie_bloc.dart';
 import 'package:ditonton/presentation/bloc/search_movies/search_bloc.dart';
 import 'package:ditonton/presentation/bloc/search_series/series_search_bloc.dart';
 import 'package:ditonton/presentation/bloc/series/series_bloc.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
-import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
-import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
-import 'package:ditonton/presentation/provider/popular_series_notifier.dart';
-import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
-import 'package:ditonton/presentation/provider/top_rated_series_notifier.dart';
-import 'package:ditonton/presentation/provider/series_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/series_list_notifier.dart';
-import 'package:ditonton/presentation/provider/series_search_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_series_notifier.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
 
