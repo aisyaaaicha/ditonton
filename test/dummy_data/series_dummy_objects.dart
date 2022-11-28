@@ -1,20 +1,20 @@
-import 'package:ditonton/data/models/Series_table.dart';
+import 'package:ditonton/data/models/series_table.dart';
 import 'package:ditonton/domain/entities/genre.dart';
-import 'package:ditonton/domain/entities/Series.dart';
-import 'package:ditonton/domain/entities/Series_detail.dart';
+import 'package:ditonton/domain/entities/series.dart';
+import 'package:ditonton/domain/entities/series_detail.dart';
 
 final testSeries = Series(
-  backdropPath: '"/1rO4xoCo4Z5WubK0OwdVll3DPYo.jpg"',
-  genreIds: [10765, 10759, 18],
-  id: 84773,
-  name: 'The Lord of the Rings: The Rings of Power',
-  originalName: "The Lord of the Rings: The Rings of Power",
+  backdropPath: "/jeP3It0ZPY3SKW3632qwLkkIZv3.jpg",
+  genreIds: [35],
+  id: 32568,
+  name: 'Till Death Us Do Part',
+  originalName: "Till Death Us Do Part",
   overview:
-      "Beginning in a time of relative peace, we follow an ensemble cast of characters as they confront the re-emergence of evil to Middle-earth. From the darkest depths of the Misty Mountains, to the majestic forests of Lindon, to the breathtaking island kingdom of Númenor, to the furthest reaches of the map, these kingdoms and characters will carve out legacies that live on long after they are gone.",
-  popularity: 5205.091,
-  posterPath: "/mYLOqiStMxDK3fYZFirgrMt8z5d.jpg",
-  voteAverage: 7.7,
-  voteCount: 983,
+      "Following the chronicles of the East End working-class Garnett family, headed by patriarch Alf Garnett, a reactionary working-class man who holds racist and anti-socialist views.",
+  popularity: 4.321,
+  posterPath: "/5r8enLaWs3SnVoInZYsOLZgboki.jpg",
+  voteAverage: 7.275,
+  voteCount: 20,
 );
 
 final testSeriesList = [testSeries];

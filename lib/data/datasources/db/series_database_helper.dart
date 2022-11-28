@@ -4,6 +4,7 @@ import 'package:ditonton/data/models/series_table.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SeriesDatabaseHelper {
+  // ignore: non_constant_identifier_names
   static SeriesDatabaseHelper? _SeriesDatabaseHelper;
   SeriesDatabaseHelper._instance() {
     _SeriesDatabaseHelper = this;

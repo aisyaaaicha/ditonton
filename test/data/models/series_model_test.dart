@@ -3,7 +3,7 @@ import 'package:ditonton/domain/entities/series.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final tSeriesModel = Result(
+  final tSeriesModel = SeriesModel(
     backdropPath: 'backdropPath',
     genreIds: [1, 2, 3],
     id: 1,

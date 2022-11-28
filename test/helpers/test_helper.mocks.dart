@@ -58,9 +58,9 @@ class _FakeMovieDetailResponse_1 extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
-class _FakeSeriesDetailModel_2 extends _i1.SmartFake
-    implements _i4.SeriesDetailModel {
-  _FakeSeriesDetailModel_2(Object parent, Invocation parentInvocation)
+class _FakeSeriesDetailResponse_2 extends _i1.SmartFake
+    implements _i4.SeriesDetailResponse {
+  _FakeSeriesDetailResponse_2(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -376,38 +376,39 @@ class MockSeriesRemoteDataSource extends _i1.Mock
   }
 
   @override
-  _i7.Future<List<_i21.Result>> getNowPlayingSeries() =>
+  _i7.Future<List<_i21.SeriesModel>> getNowPlayingSeries() =>
       (super.noSuchMethod(Invocation.method(#getNowPlayingSeries, []),
-              returnValue: _i7.Future<List<_i21.Result>>.value(<_i21.Result>[]))
-          as _i7.Future<List<_i21.Result>>);
+          returnValue: _i7.Future<List<_i21.SeriesModel>>.value(
+              <_i21.SeriesModel>[])) as _i7.Future<List<_i21.SeriesModel>>);
   @override
-  _i7.Future<List<_i21.Result>> getPopularSeries() =>
-      (super.noSuchMethod(Invocation.method(#getPopularSeries, []),
-              returnValue: _i7.Future<List<_i21.Result>>.value(<_i21.Result>[]))
-          as _i7.Future<List<_i21.Result>>);
+  _i7.Future<List<_i21.SeriesModel>> getPopularSeries() => (super.noSuchMethod(
+          Invocation.method(#getPopularSeries, []),
+          returnValue:
+              _i7.Future<List<_i21.SeriesModel>>.value(<_i21.SeriesModel>[]))
+      as _i7.Future<List<_i21.SeriesModel>>);
   @override
-  _i7.Future<List<_i21.Result>> getTopRatedSeries() =>
-      (super.noSuchMethod(Invocation.method(#getTopRatedSeries, []),
-              returnValue: _i7.Future<List<_i21.Result>>.value(<_i21.Result>[]))
-          as _i7.Future<List<_i21.Result>>);
+  _i7.Future<List<_i21.SeriesModel>> getTopRatedSeries() => (super.noSuchMethod(
+          Invocation.method(#getTopRatedSeries, []),
+          returnValue:
+              _i7.Future<List<_i21.SeriesModel>>.value(<_i21.SeriesModel>[]))
+      as _i7.Future<List<_i21.SeriesModel>>);
   @override
-  _i7.Future<_i4.SeriesDetailModel> getSeriesDetail(int? id) => (super
-          .noSuchMethod(
-              Invocation.method(#getSeriesDetail, [id]),
-              returnValue: _i7.Future<_i4.SeriesDetailModel>.value(
-                  _FakeSeriesDetailModel_2(
+  _i7.Future<_i4.SeriesDetailResponse> getSeriesDetail(int? id) =>
+      (super.noSuchMethod(Invocation.method(#getSeriesDetail, [id]),
+              returnValue: _i7.Future<_i4.SeriesDetailResponse>.value(
+                  _FakeSeriesDetailResponse_2(
                       this, Invocation.method(#getSeriesDetail, [id]))))
-      as _i7.Future<_i4.SeriesDetailModel>);
+          as _i7.Future<_i4.SeriesDetailResponse>);
   @override
-  _i7.Future<List<_i21.Result>> getSeriesRecommendations(int? id) =>
+  _i7.Future<List<_i21.SeriesModel>> getSeriesRecommendations(int? id) =>
       (super.noSuchMethod(Invocation.method(#getSeriesRecommendations, [id]),
-              returnValue: _i7.Future<List<_i21.Result>>.value(<_i21.Result>[]))
-          as _i7.Future<List<_i21.Result>>);
+          returnValue: _i7.Future<List<_i21.SeriesModel>>.value(
+              <_i21.SeriesModel>[])) as _i7.Future<List<_i21.SeriesModel>>);
   @override
-  _i7.Future<List<_i21.Result>> searchSeries(String? query) =>
+  _i7.Future<List<_i21.SeriesModel>> searchSeries(String? query) =>
       (super.noSuchMethod(Invocation.method(#searchSeries, [query]),
-              returnValue: _i7.Future<List<_i21.Result>>.value(<_i21.Result>[]))
-          as _i7.Future<List<_i21.Result>>);
+          returnValue: _i7.Future<List<_i21.SeriesModel>>.value(
+              <_i21.SeriesModel>[])) as _i7.Future<List<_i21.SeriesModel>>);
 }
 
 /// A class which mocks [SeriesLocalDataSource].

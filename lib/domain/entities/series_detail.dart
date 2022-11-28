@@ -14,8 +14,8 @@ class SeriesDetail extends Equatable {
     required this.nextEpisodeToAir,
     required this.numberOfEpisodes,
     required this.numberOfSeasons,
-    required this.originalLanguage,
     required this.originalName,
+    required this.originalLanguage,
     required this.overview,
     required this.popularity,
     required this.posterPath,
@@ -41,8 +41,8 @@ class SeriesDetail extends Equatable {
   final int numberOfEpisodes;
   final int numberOfSeasons;
 
-  final String originalLanguage;
   final String originalName;
+  final String originalLanguage;
   final String overview;
   final double popularity;
   final String posterPath;
@@ -66,8 +66,8 @@ class SeriesDetail extends Equatable {
         nextEpisodeToAir,
         numberOfEpisodes,
         numberOfSeasons,
-        originalLanguage,
         originalName,
+        originalLanguage,
         overview,
         popularity,
         posterPath,

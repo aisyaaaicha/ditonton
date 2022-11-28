@@ -1,8 +1,8 @@
 import 'package:ditonton/domain/entities/series.dart';
 import 'package:equatable/equatable.dart';
 
-class Result extends Equatable {
-  Result({
+class SeriesModel extends Equatable {
+  SeriesModel({
     required this.backdropPath,
     required this.genreIds,
     required this.id,
@@ -26,7 +26,7 @@ class Result extends Equatable {
   final double voteAverage;
   final int voteCount;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory SeriesModel.fromJson(Map<String, dynamic> json) => SeriesModel(
         backdropPath: json["backdrop_path"].toString(),
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
@@ -40,6 +40,7 @@ class Result extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
+        // ignore: unnecessary_null_comparison
         "backdrop_path": backdropPath == null ? null : backdropPath,
         "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
         "id": id,
@@ -81,5 +82,3 @@ class Result extends Equatable {
         voteCount,
       ];
 }
-
-mixin SeriesModel {}

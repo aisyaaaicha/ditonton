@@ -2,8 +2,8 @@ import 'package:ditonton/data/models/genre_model.dart';
 import 'package:ditonton/domain/entities/series_detail.dart';
 import 'package:equatable/equatable.dart';
 
-class SeriesDetailModel extends Equatable {
-  SeriesDetailModel({
+class SeriesDetailResponse extends Equatable {
+  SeriesDetailResponse({
     required this.adult,
     required this.backdropPath,
     required this.episodeRunTime,
@@ -49,8 +49,8 @@ class SeriesDetailModel extends Equatable {
   final double voteAverage;
   final int voteCount;
 
-  factory SeriesDetailModel.fromJson(Map<String, dynamic> json) =>
-      SeriesDetailModel(
+  factory SeriesDetailResponse.fromJson(Map<String, dynamic> json) =>
+      SeriesDetailResponse(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         episodeRunTime: List<int>.from(json["episode_run_time"].map((x) => x)),
@@ -169,5 +169,3 @@ class Genre {
         "name": name,
       };
 }
-
-class SeriesDetailResponse {}

@@ -28,35 +28,35 @@ void main() {
     );
   });
 
-  final tSeriesModel = Result(
-    backdropPath: '/thCj6VEVQlFlup4aJ74kdRhfujB.jpg',
-    genreIds: [18],
-    id: 82428,
-    originalName: 'All American',
+  final tSeriesModel = SeriesModel(
+    backdropPath: '/jeP3It0ZPY3SKW3632qwLkkIZv3.jpg',
+    genreIds: [35],
+    id: 550,
+    originalName: 'Till Death Us Do Part',
     overview:
-        'When a rising high school football player from South Central L.A. is recruited to play for Beverly Hills High, the wins, losses and struggles of two families from vastly different worlds - Compton and Beverly Hills - begin to collide. Inspired by the life of pro football player Spencer Paysinger.',
-    popularity: 99.077,
-    posterPath: '/bpmZDwQfUPVKCLfIivbWnJQT6wU.jpg',
-    name: 'All American',
-    voteAverage: 8.3,
-    voteCount: 342,
+        "Following the chronicles of the East End working-class Garnett family, headed by patriarch Alf Garnett, a reactionary working-class man who holds racist and anti-socialist views.",
+    popularity: 4.321,
+    posterPath: '/5r8enLaWs3SnVoInZYsOLZgboki.jpg',
+    name: 'Till Death Us Do Part',
+    voteAverage: 7.275,
+    voteCount: 20,
   );
 
   final tSeries = Series(
-    backdropPath: '/thCj6VEVQlFlup4aJ74kdRhfujB.jpg',
-    genreIds: [18],
-    id: 82428,
-    originalName: 'All American',
+    backdropPath: '/jeP3It0ZPY3SKW3632qwLkkIZv3.jpg',
+    genreIds: [35],
+    id: 550,
+    originalName: 'Till Death Us Do Part',
     overview:
-        'When a rising high school football player from South Central L.A. is recruited to play for Beverly Hills High, the wins, losses and struggles of two families from vastly different worlds - Compton and Beverly Hills - begin to collide. Inspired by the life of pro football player Spencer Paysinger.',
-    popularity: 99.077,
-    posterPath: '/bpmZDwQfUPVKCLfIivbWnJQT6wU.jpg',
-    name: 'All American',
-    voteAverage: 8.3,
-    voteCount: 342,
+        "Following the chronicles of the East End working-class Garnett family, headed by patriarch Alf Garnett, a reactionary working-class man who holds racist and anti-socialist views.",
+    popularity: 4.321,
+    posterPath: '/5r8enLaWs3SnVoInZYsOLZgboki.jpg',
+    name: 'Till Death Us Do Part',
+    voteAverage: 7.275,
+    voteCount: 20,
   );
 
-  final tSeriesModelList = <Result>[tSeriesModel];
+  final tSeriesModelList = <SeriesModel>[tSeriesModel];
   final tSeriesList = <Series>[tSeries];
 
   group('On The Air Series', () {
@@ -169,7 +169,7 @@ void main() {
     });
 
     test(
-        'should return ConnectionFailure when device is not connected to the internet',
+        'should return Connection Failure when device is not connected to the internet',
         () async {
       // arrange
       when(mockRemoteDataSource.getTopRatedSeries())
@@ -182,9 +182,9 @@ void main() {
     });
   });
 
-  group('Get Series Detail', () {
+  group('Get TV Series Detail', () {
     final tId = 6;
-    final tSeriesResponse = SeriesDetailModel(
+    final tSeriesResponse = SeriesDetailResponse(
       adult: false,
       backdropPath: 'backdropPath',
       episodeRunTime: [1, 2],
@@ -250,7 +250,7 @@ void main() {
   });
 
   group('Get Movie Recommendations', () {
-    final tSeriesList = <Result>[];
+    final tSeriesList = <SeriesModel>[];
     final tId = 1;
 
     test('should return data (movie list) when the call is successful',
@@ -336,6 +336,61 @@ void main() {
     });
   });
 
+  group('save watchlist', () {
+    test('should return success message when saving successful', () async {
+      // arrange
+      when(mockLocalDataSource.insertWatchlist(testSeriesTable))
+          .thenAnswer((_) async => 'Added to Watchlist');
+      // act
+      final result = await repository.saveWatchlistSeries(testSeriesDetail);
+      // assert
+      expect(result, Right('Added to Watchlist'));
+    });
+
+    test('should return DatabaseFailure when saving unsuccessful', () async {
+      // arrange
+      when(mockLocalDataSource.insertWatchlist(testSeriesTable))
+          .thenThrow(DatabaseException('Failed to add watchlist'));
+      // act
+      final result = await repository.saveWatchlistSeries(testSeriesDetail);
+      // assert
+      expect(result, Left(DatabaseFailure('Failed to add watchlist')));
+    });
+  });
+
+  group('remove watchlist', () {
+    test('should return success message when remove successful', () async {
+      // arrange
+      when(mockLocalDataSource.removeWatchlist(testSeriesTable))
+          .thenAnswer((_) async => 'Removed from watchlist');
+      // act
+      final result = await repository.removeWatchlistSeries(testSeriesDetail);
+      // assert
+      expect(result, Right('Removed from watchlist'));
+    });
+
+    test('should return DatabaseFailure when remove unsuccessful', () async {
+      // arrange
+      when(mockLocalDataSource.removeWatchlist(testSeriesTable))
+          .thenThrow(DatabaseException('Failed to remove watchlist'));
+      // act
+      final result = await repository.removeWatchlistSeries(testSeriesDetail);
+      // assert
+      expect(result, Left(DatabaseFailure('Failed to remove watchlist')));
+    });
+  });
+  group('get watchlist series', () {
+    test('should return list of Series', () async {
+      // arrange
+      when(mockLocalDataSource.getWatchlistSeries())
+          .thenAnswer((_) async => [testSeriesTable]);
+      // act
+      final result = await repository.getWatchlistSeries();
+      // assert
+      final resultList = result.getOrElse(() => []);
+      expect(resultList, [testWatchlistSeries]);
+    });
+  });
   group('get watchlist status', () {
     test('should return watch status whether data is found', () async {
       // arrange
