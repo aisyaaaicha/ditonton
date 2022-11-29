@@ -1,8 +1,7 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/popular_series_notifier.dart';
+import 'package:ditonton/presentation/bloc/series/series_bloc.dart';
 import 'package:ditonton/presentation/widgets/series_card.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PopularSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/popular-series';
@@ -15,9 +14,8 @@ class _PopularSeriesPageState extends State<PopularSeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<PopularSeriesNotifier>(context, listen: false)
-            .fetchPopularSeries());
+    Future.microtask(
+        () => context.read<PopularSeriesBloc>().add(FetchPopularSeries()));
   }
 
   @override
@@ -28,25 +26,27 @@ class _PopularSeriesPageState extends State<PopularSeriesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<PopularSeriesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
+        child: BlocBuilder<PopularSeriesBloc, SeriesState>(
+          builder: (context, state) {
+            if (state is SeriesLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.Loaded) {
+            } else if (state is SeriesHasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final series = data.series[index];
+                  final series = state.series[index];
                   return SeriesCard(series);
                 },
-                itemCount: data.series.length,
+                itemCount: state.series.length,
               );
-            } else {
+            } else if (state is SeriesHasError) {
               return Center(
                 key: Key('error_message'),
-                child: Text(data.message),
+                child: Text(state.message),
               );
+            } else {
+              return const Text('No Data');
             }
           },
         ),

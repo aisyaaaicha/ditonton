@@ -31,7 +31,7 @@ import 'package:ditonton/presentation/bloc/movie/movie_bloc.dart';
 import 'package:ditonton/presentation/bloc/search_movies/search_bloc.dart';
 import 'package:ditonton/presentation/bloc/search_series/series_search_bloc.dart';
 import 'package:ditonton/presentation/bloc/series/series_bloc.dart';
-import 'package:http/http.dart' as http;
+import 'package:ditonton/ssl_pinning.dart';
 import 'package:get_it/get_it.dart';
 
 import 'domain/usecases/get_now_playing_series.dart';
@@ -96,6 +96,26 @@ void init() {
       locator(),
     ),
   );
+  locator.registerFactory(
+    () => RecommendationsSeriesBloc(
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => NowPlayingSeriesBloc(
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => RecommendationMovieBloc(
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => NowPlayingMovieBloc(
+      locator(),
+    ),
+  );
 
   // use case
   locator.registerLazySingleton(() => GetNowPlayingMovies(locator()));
@@ -125,6 +145,7 @@ void init() {
       localDataSource: locator(),
     ),
   );
+
   locator.registerLazySingleton<SeriesRepository>(
     () => SeriesRepositoryImpl(
       remoteDataSource: locator(),
@@ -136,16 +157,15 @@ void init() {
       () => MovieRemoteDataSourceImpl(client: locator()));
   locator.registerLazySingleton<MovieLocalDataSource>(
       () => MovieLocalDataSourceImpl(databaseHelper: locator()));
+
   locator.registerLazySingleton<SeriesRemoteDataSource>(
       () => SeriesRemoteDataSourceImpl(client: locator()));
   locator.registerLazySingleton<SeriesLocalDataSource>(
       () => SeriesLocalDataSourceImpl(databaseHelper: locator()));
-
   // helper
   locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
   locator.registerLazySingleton<SeriesDatabaseHelper>(
       () => SeriesDatabaseHelper());
-
   // external
-  locator.registerLazySingleton(() => http.Client());
+  locator.registerLazySingleton(() => SslPinning.client);
 }

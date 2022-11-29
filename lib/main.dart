@@ -1,6 +1,7 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/presentation/bloc/movie/movie_bloc.dart';
+import 'package:ditonton/presentation/bloc/search_movies/search_bloc.dart';
 import 'package:ditonton/presentation/bloc/search_series/series_search_bloc.dart';
 import 'package:ditonton/presentation/bloc/series/series_bloc.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
@@ -17,6 +18,7 @@ import 'package:ditonton/presentation/pages/series_detail_page.dart';
 import 'package:ditonton/presentation/pages/series_search_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_series_page.dart';
+import 'package:ditonton/ssl_pinning.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +27,7 @@ import 'package:ditonton/injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SslPinning.init();
   di.init();
   runApp(MyApp());
 }
@@ -47,6 +50,15 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<WatchlistMovieBloc>(),
         ),
         BlocProvider(
+          create: (_) => di.locator<RecommendationMovieBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<SearchBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<NowPlayingMovieBloc>(),
+        ),
+        BlocProvider(
           create: (_) => di.locator<SeriesDetailBloc>(),
         ),
         BlocProvider(
@@ -60,6 +72,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => di.locator<WatchlistSeriesBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<NowPlayingSeriesBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<PopularSeriesBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<RecommendationsSeriesBloc>(),
         ),
       ],
       child: MaterialApp(

@@ -1,15 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/series.dart';
+import 'package:ditonton/presentation/bloc/series/series_bloc.dart';
 import 'package:ditonton/presentation/pages/now_playing.series.dart';
 import 'package:ditonton/presentation/pages/series_search_page.dart';
 import 'package:ditonton/presentation/pages/series_detail_page.dart';
 import 'package:ditonton/presentation/pages/popular_series_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_series_page.dart';
-import 'package:ditonton/presentation/provider/series_list_notifier.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/series';
@@ -21,11 +20,11 @@ class _SeriesPageState extends State<SeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => Provider.of<SeriesListNotifier>(context, listen: false)
-          ..fetchNowPlayingSeries()
-          ..fetchPopularSeries()
-          ..fetchTopRatedSeries());
+    Future.microtask(() {
+      context.read<PopularSeriesBloc>().add(FetchPopularSeries());
+      context.read<NowPlayingSeriesBloc>().add(FetchNowPlayingSeries());
+      context.read<TopRatedSeriesBloc>().add(FetchTopRatedSeries());
+    });
   }
 
   @override
@@ -53,14 +52,18 @@ class _SeriesPageState extends State<SeriesPage> {
                 onTap: () => Navigator.pushNamed(
                     context, NowPlayingSeriesPage.ROUTE_NAME),
               ),
-              Consumer<SeriesListNotifier>(builder: (context, data, child) {
-                final state = data.nowPlayingState;
-                if (state == RequestState.Loading) {
+              BlocBuilder<NowPlayingSeriesBloc, SeriesState>(
+                  builder: (context, state) {
+                if (state is SeriesLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state == RequestState.Loaded) {
-                  return SeriesList(data.nowPlayingSeries);
+                } else if (state is SeriesHasData) {
+                  return SeriesList(state.series);
+                } else if (state is SeriesHasError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
                 } else {
                   return Text('Failed');
                 }
@@ -70,14 +73,18 @@ class _SeriesPageState extends State<SeriesPage> {
                 onTap: () =>
                     Navigator.pushNamed(context, PopularSeriesPage.ROUTE_NAME),
               ),
-              Consumer<SeriesListNotifier>(builder: (context, data, child) {
-                final state = data.popularSeriesState;
-                if (state == RequestState.Loading) {
+              BlocBuilder<PopularSeriesBloc, SeriesState>(
+                  builder: (context, state) {
+                if (state is SeriesLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state == RequestState.Loaded) {
-                  return SeriesList(data.popularSeries);
+                } else if (state is SeriesHasData) {
+                  return SeriesList(state.series);
+                } else if (state is SeriesHasError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
                 } else {
                   return Text('Failed');
                 }
@@ -87,14 +94,18 @@ class _SeriesPageState extends State<SeriesPage> {
                 onTap: () =>
                     Navigator.pushNamed(context, TopRatedSeriesPage.ROUTE_NAME),
               ),
-              Consumer<SeriesListNotifier>(builder: (context, data, child) {
-                final state = data.topRatedSeriesState;
-                if (state == RequestState.Loading) {
+              BlocBuilder<TopRatedSeriesBloc, SeriesState>(
+                  builder: (context, state) {
+                if (state is SeriesLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state == RequestState.Loaded) {
-                  return SeriesList(data.topRatedSeries);
+                } else if (state is SeriesHasData) {
+                  return SeriesList(state.series);
+                } else if (state is SeriesHasError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
                 } else {
                   return Text('Failed');
                 }

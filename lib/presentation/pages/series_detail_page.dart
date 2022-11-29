@@ -3,11 +3,10 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/series.dart';
 import 'package:ditonton/domain/entities/series_detail.dart';
-import 'package:ditonton/presentation/provider/series_detail_notifier.dart';
-import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/presentation/bloc/series/series_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:provider/provider.dart';
 
 class SeriesDetailPage extends StatefulWidget {
   static const ROUTE_NAME = '/seriesdetail';
@@ -24,33 +23,54 @@ class _SeriesDetailPageState extends State<SeriesDetailPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<SeriesDetailNotifier>(context, listen: false)
-          .fetchSeriesDetail(widget.id);
-      Provider.of<SeriesDetailNotifier>(context, listen: false)
-          .loadWatchlistStatus(widget.id);
+      context.read<SeriesDetailBloc>().add(FetchSeriesDetail(widget.id));
+      context
+          .read<WatchlistSeriesBloc>()
+          .add(LoadWatchlistSeriesStatus(widget.id));
+      context
+          .read<RecommendationsSeriesBloc>()
+          .add(FetchSeriesRecommendations(widget.id));
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final seriesRecommendation =
+        context.select<RecommendationsSeriesBloc, List<Series>>((value) {
+      var state = value.state;
+      if (state is SeriesHasData) {
+        return (state).series;
+      }
+      return [];
+    });
+
+    var isAddedToWatchlist = context.select<WatchlistSeriesBloc, bool>((value) {
+      var state = value.state;
+      if (state is LoadSeriesWatchlistData) {
+        return state.status;
+      }
+      return false;
+    });
+
     return Scaffold(
-      body: Consumer<SeriesDetailNotifier>(
-        builder: (context, provider, child) {
-          if (provider.seriesState == RequestState.Loading) {
+      body: BlocBuilder<SeriesDetailBloc, SeriesState>(
+        builder: (context, state) {
+          if (state is SeriesLoading) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (provider.seriesState == RequestState.Loaded) {
-            final series = provider.series;
+          } else if (state is SeriesDetailHasData) {
             return SafeArea(
               child: DetailContent(
-                series,
-                provider.seriesRecommendations,
-                provider.isAddedToWatchlist,
+                state.series,
+                seriesRecommendation,
+                isAddedToWatchlist,
               ),
             );
+          } else if (state is SeriesHasError) {
+            return Center(child: Text(state.message));
           } else {
-            return Text(provider.message);
+            return const Text('No Data');
           }
         },
       ),
@@ -108,30 +128,47 @@ class DetailContent extends StatelessWidget {
                             ElevatedButton(
                               onPressed: () async {
                                 if (!isAddedWatchlist) {
-                                  await Provider.of<SeriesDetailNotifier>(
-                                          context,
-                                          listen: false)
-                                      .addWatchlist(series);
+                                  context
+                                      .read<WatchlistSeriesBloc>()
+                                      .add(AddWatchlistSeries(series));
                                 } else {
-                                  await Provider.of<SeriesDetailNotifier>(
-                                          context,
-                                          listen: false)
-                                      .removeFromWatchlist(series);
+                                  context
+                                      .read<WatchlistSeriesBloc>()
+                                      .add(RemoveWatchlistSerieses(series));
                                 }
 
-                                final message =
-                                    Provider.of<SeriesDetailNotifier>(context,
-                                            listen: false)
-                                        .watchlistMessage;
+                                String message = '';
+
+                                final state =
+                                    BlocProvider.of<WatchlistSeriesBloc>(
+                                            context)
+                                        .state;
+
+                                if (state is LoadSeriesWatchlistData) {
+                                  message = isAddedWatchlist
+                                      ? WatchlistSeriesBloc
+                                          .watchlistRemoveSuccessMessage
+                                      : WatchlistSeriesBloc
+                                          .watchlistAddSuccessMessage;
+                                } else {
+                                  message = isAddedWatchlist == false
+                                      ? WatchlistSeriesBloc
+                                          .watchlistAddSuccessMessage
+                                      : WatchlistSeriesBloc
+                                          .watchlistRemoveSuccessMessage;
+                                }
 
                                 if (message ==
-                                        SeriesDetailNotifier
+                                        WatchlistSeriesBloc
                                             .watchlistAddSuccessMessage ||
                                     message ==
-                                        SeriesDetailNotifier
+                                        WatchlistSeriesBloc
                                             .watchlistRemoveSuccessMessage) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(message)));
+                                  BlocProvider.of<WatchlistSeriesBloc>(context)
+                                      .add(
+                                          LoadWatchlistSeriesStatus(series.id));
                                 } else {
                                   showDialog(
                                       context: context,
@@ -182,18 +219,15 @@ class DetailContent extends StatelessWidget {
                               'Recommendations',
                               style: kHeading6,
                             ),
-                            Consumer<SeriesDetailNotifier>(
-                              builder: (context, data, child) {
-                                if (data.recommendationState ==
-                                    RequestState.Loading) {
+                            BlocBuilder<SeriesDetailBloc, SeriesState>(
+                              builder: (context, state) {
+                                if (state is SeriesLoading) {
                                   return Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else if (data.recommendationState ==
-                                    RequestState.Error) {
-                                  return Text(data.message);
-                                } else if (data.recommendationState ==
-                                    RequestState.Loaded) {
+                                } else if (state is SeriesHasError) {
+                                  return Text(state.message);
+                                } else if (state is SeriesDetailHasData) {
                                   return Container(
                                     height: 150,
                                     child: ListView.builder(
